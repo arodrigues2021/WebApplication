@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
+
 namespace Aplication.Users.DTO
 {
     public class UsuarioDTO
