@@ -6,4 +6,4 @@ Cambiar la ConnectionStrings en el fichero en appesttings.json
 
 Crear dabase de Demo y ejecutar el script SQLCrearTabla.sql
 
-
+https://localhost:44341/working Healthchecks
