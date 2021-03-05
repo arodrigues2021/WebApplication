@@ -27,7 +27,7 @@ namespace PresentationWeb.Controllers
             try
             {
                 return Ok(await Task.FromResult(_ServicesLogin.validarlogin(email, password)).ConfigureAwait(false));
-            } 
+            }
             catch (Exception err)
             {
                 log.Error("LoginController-validarloginAsync");
@@ -101,12 +101,23 @@ namespace PresentationWeb.Controllers
         /// <returns></returns>
         [HttpPost]
         [ResponseType(typeof(IEnumerable<ResponseDto>)), Route("api/users/UpdateUsuario")]
-        public async Task<IActionResult> UpadateUsuario(UsuarioDTO usuario)
+        public async Task<IActionResult> UpdateUsuario(UsuarioDTO usuario)
         {
-            if (usuario == null)
-                return BadRequest("Parámetros Vacíos");
-
-            return Ok(await Task.FromResult(_UsersService.UpdateUsuario(usuario)).ConfigureAwait(false)); ;
+            try
+            {
+                return Ok(await Task.FromResult(_UsersService.UpdateUsuario(usuario)).ConfigureAwait(false));
+            }
+            catch (Exception err)
+            {
+                log.Error("LoginController-UpdateUsuario");
+                ResponseDto response = new ResponseDto
+                {
+                    data = "",
+                    message = err.Message,
+                    result = false
+                };
+                return BadRequest(response);
+            }
         }
 
         public IActionResult Index()
