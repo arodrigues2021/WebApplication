@@ -15,6 +15,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure", "Infrastru
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PresentationWeb", "WebApplicationMVC\PresentationWeb.csproj", "{E3B934F0-91DF-42B3-9AA6-FD5EAED90DA7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "cache", "cache\cache.csproj", "{58F90D86-4F1B-4ADE-B5BE-F25364727D4E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -55,6 +57,14 @@ Global
 		{E3B934F0-91DF-42B3-9AA6-FD5EAED90DA7}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E3B934F0-91DF-42B3-9AA6-FD5EAED90DA7}.Release|x64.ActiveCfg = Release|Any CPU
 		{E3B934F0-91DF-42B3-9AA6-FD5EAED90DA7}.Release|x64.Build.0 = Release|Any CPU
+		{58F90D86-4F1B-4ADE-B5BE-F25364727D4E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{58F90D86-4F1B-4ADE-B5BE-F25364727D4E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{58F90D86-4F1B-4ADE-B5BE-F25364727D4E}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{58F90D86-4F1B-4ADE-B5BE-F25364727D4E}.Debug|x64.Build.0 = Debug|Any CPU
+		{58F90D86-4F1B-4ADE-B5BE-F25364727D4E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{58F90D86-4F1B-4ADE-B5BE-F25364727D4E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{58F90D86-4F1B-4ADE-B5BE-F25364727D4E}.Release|x64.ActiveCfg = Release|Any CPU
+		{58F90D86-4F1B-4ADE-B5BE-F25364727D4E}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -65,6 +75,7 @@ Global
 		{55BC1398-219B-474C-BF8C-63934AED6B4C} = {4ED7C140-3037-4C79-90B7-04A584C6749C}
 		{4AAC07AB-7F8F-49D8-B53F-4E0D59B7A432} = {4ED7C140-3037-4C79-90B7-04A584C6749C}
 		{E3B934F0-91DF-42B3-9AA6-FD5EAED90DA7} = {F9AAD8FD-B1F7-4D69-98BF-127A00F71CFE}
+		{58F90D86-4F1B-4ADE-B5BE-F25364727D4E} = {4ED7C140-3037-4C79-90B7-04A584C6749C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {28B664D2-45E2-4108-B254-87A5953A6DDE}

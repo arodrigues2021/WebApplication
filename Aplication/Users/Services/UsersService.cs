@@ -131,7 +131,8 @@ namespace Aplication.Users.Services
                                           Nombre = a.Nombre,
                                           Apellido = a.Apellido,
                                           Email = a.Email,
-                                          Movil = a.Movil
+                                          Movil = a.Movil,
+                                          Balance = a.Balance
 
                                       }).ToList();
 

@@ -19,6 +19,29 @@ namespace PresentationWeb.Controllers
 
         public LoginController(ILogin ServicesLogin, IUsersService UsersService) : base(ServicesLogin, UsersService) { }
 
+
+        [HttpGet]
+        [ResponseType(typeof(IEnumerable<ResponseDto>)), Route("api/user/GetListUsers")]
+        public async Task<IActionResult> GetListUsers()
+        {
+            try
+            {
+                return Ok(await Task.FromResult(_UsersService.GetListUsers()).ConfigureAwait(false));
+            }
+            catch (Exception err)
+            {
+                log.Error("LoginController-GetListUsers");
+                ResponseDto response = new ResponseDto
+                {
+                    data = "",
+                    message = err.Message,
+                    result = false
+                };
+                return BadRequest(response);
+            }
+        }
+
+
         [HttpGet]
         [ResponseType(typeof(IEnumerable<ResponseDto>)), Route("api/user/validarloginAsync/{email}/{password}")]
         //Ejemplo:https://localhost:44341/api/validarloginAsync/arodrigues2010@hotmail.com/123
@@ -76,8 +99,16 @@ namespace PresentationWeb.Controllers
         {
             try
             {
-                if (usuario.Email == null)
-                    return BadRequest("Parámetros Vacíos");
+                if (String.IsNullOrEmpty(usuario.Email))
+                {
+                    ResponseDto response = new ResponseDto
+                    {
+                        data = "",
+                        message = "El email no puede estar en blanco",
+                        result = false
+                    };
+                    return BadRequest(response);
+                }
 
                 return Ok(await Task.FromResult(_UsersService.BorrarUsuario(usuario)).ConfigureAwait(false));
 

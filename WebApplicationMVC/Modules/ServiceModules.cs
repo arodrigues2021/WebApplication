@@ -5,7 +5,7 @@ using Aplication.AplicationServices.Interface;
 using Autofac;
 using Infrastructure.Users;
 using Infrastructure.Users.Interface;
-
+using cache;
 
 namespace PresentationWeb
 {
@@ -17,6 +17,9 @@ namespace PresentationWeb
             builder.RegisterType<UsersService>().As<IUsersService>();
             builder.RegisterType<UsersRepository>().As<IUsersRepository>();
             builder.RegisterType<ServicesLogin>().As<ILogin>();
+            builder.RegisterType<CacheService<object>>().As<ICacheService<object>>();
+            
+
         }
     }
 }

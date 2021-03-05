@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Extensions.Caching.Redis;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -9,6 +10,8 @@ namespace Domain
     {
         public ConnectionStrings connectionStrings { get; set; }
         public AppSettings appSettings { get; set; }
+        public RedisCache redisCache { get; set; }
+
     }
 
     public class ConnectionStrings
@@ -19,5 +22,11 @@ namespace Domain
     public class AppSettings
     {
         public string numdiascambio { get; set; }
+       
+    }
+
+    public class RedisCache
+    {
+        public int ExpirationMin { get; set; }
     }
 }
