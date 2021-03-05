@@ -1,4 +1,5 @@
 ﻿using Aplication.Users.DTO;
+using cache;
 using Dapper;
 using Domain;
 using Domain.DTO;
@@ -21,13 +22,19 @@ namespace Aplication.Users.Services
 
         private readonly Config _config;
 
-        public UsersService(Config config, IUsersRepository usersRepository)
+        private readonly ICacheService<object> _cacheService;
+
+        static readonly log4net.ILog log = log4net.LogManager.GetLogger(typeof(UsersService));
+
+        public UsersService(Config config, IUsersRepository usersRepository, ICacheService<object> cacheService)
         {
             _config = config;
 
             _db = new SqlConnection(_config.connectionStrings.Database);
 
             this.usersRepository = usersRepository;
+
+            _cacheService = cacheService;
         }
 
         public int AddUsuario(UsuarioDTO usuario)
@@ -65,8 +72,18 @@ namespace Aplication.Users.Services
 
             int result = _db.Execute(SqlString, parameter);
 
+            var mykey = "listUsers";
+
+            if (_cacheService.IsExists(mykey))
+            {
+                _cacheService.IsExistsDelete(mykey);
+
+                log.Info("Delete Cache Redis - AddUsuario");
+            }
+
             return result;
         }
+
 
         public int BorrarUsuario(BorradoDTO usuario)
         {
@@ -82,6 +99,15 @@ namespace Aplication.Users.Services
                 string SqlString = $@" DELETE FROM [Usuario] WHERE [id] =  @id ";
 
                 result = _db.Execute(SqlString, new { id = id });
+            }
+
+            var mykey = "listUsers";
+
+            if (_cacheService.IsExists(mykey))
+            {
+                _cacheService.IsExistsDelete(mykey);
+
+                log.Info("Delete Cache Redis - BorrarUsuario");
             }
 
             return result;

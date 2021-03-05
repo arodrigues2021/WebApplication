@@ -50,6 +50,25 @@ namespace cache
 
         }
 
+        public bool IsExistsDelete(string key)
+        {
+            try
+            {
+                this.redisCache.Remove(key);
+
+                return true;
+
+
+            }
+            catch (Exception ex)
+            {
+                var a = ex;
+                return false;
+            }
+
+
+        }
+
 
         public object Get<TEntity>(string key)
         {

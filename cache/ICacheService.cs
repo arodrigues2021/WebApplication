@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace cache
+﻿namespace cache
 {
     public interface ICacheService<TEntity>
     {
@@ -16,7 +12,7 @@ namespace cache
 
         void Set<TEntity>(string key, object value);
 
-
+         bool IsExistsDelete(string key);
 
 
     }
