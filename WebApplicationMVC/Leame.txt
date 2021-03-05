@@ -1,3 +1,9 @@
 ﻿https://localhost:44341/index.html   ejecutar SWAGGER
 
-Script de base de datos
+Cambiar la ConnectionStrings en el fichero en appesttings.json
+"ConnectionStrings": {
+"Database": "Server=DESKTOP-4BV122A;Database=Demo;Integrated Security=True;MultipleActiveResultSets=True;"}
+
+Crear dabase de Demo y ejecutar el script SQLCrearTabla.sql
+
+
