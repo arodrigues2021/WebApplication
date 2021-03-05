@@ -14,6 +14,7 @@ using Microsoft.OpenApi.Models;
 
 namespace WebApplicationMVC
 {
+
     public class Startup
     {
         [System.Obsolete]
