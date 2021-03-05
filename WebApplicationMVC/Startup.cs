@@ -7,10 +7,12 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using PresentationWeb;
-using System;
-using System.Reflection;
-using System.IO;
 using Microsoft.OpenApi.Models;
+using Swashbuckle.Swagger;
+using System.Web.Http.Description;
+using System.Linq;
+using System;
+using System.Collections.Generic;
 
 namespace WebApplicationMVC
 {
@@ -51,14 +53,13 @@ namespace WebApplicationMVC
 
             AddSwagger(services);
 
-            
+            services.AddHealthChecks();
         }
 
         private void AddSwagger(IServiceCollection services)
         {
             services.AddSwaggerGen(options =>
-            {
-
+            {              
                 options.SwaggerDoc("v1", new OpenApiInfo
                 {
                     Title = "Prueba WEB api",
@@ -68,6 +69,7 @@ namespace WebApplicationMVC
                 });
             });
         }
+       
         public void ConfigureContainer(ContainerBuilder builder)
         {
             //Autofact
@@ -112,6 +114,9 @@ namespace WebApplicationMVC
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Prueba API");
                 c.RoutePrefix = string.Empty;
             });
+
+            app.UseHealthChecks("/working");
         }
+
     }
 }

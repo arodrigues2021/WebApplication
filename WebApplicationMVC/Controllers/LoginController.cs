@@ -10,15 +10,23 @@ using Aplication.Users.DTO;
 using Aplication.Users;
 using Domain.DTO;
 using System;
+using System.Data.SqlClient;
+using System.Configuration;
+using Domain;
+using Microsoft.Extensions.Configuration;
+using static WebApplicationMVC.Startup;
 
 namespace PresentationWeb.Controllers
 {
     public class LoginController : BaseController
     {
+
+
         static readonly log4net.ILog log = log4net.LogManager.GetLogger(typeof(LoginController));
+        public IConfiguration Configuration { get; set; }
 
-        public LoginController(ILogin ServicesLogin, IUsersService UsersService) : base(ServicesLogin, UsersService) { }
-
+        public Config config;
+        public LoginController(ILogin ServicesLogin, IUsersService UsersService, Config config) : base(ServicesLogin, UsersService, config) { }
 
         [HttpGet]
         [ResponseType(typeof(IEnumerable<ResponseDto>)), Route("api/user/GetListUsers")]
@@ -40,7 +48,6 @@ namespace PresentationWeb.Controllers
                 return BadRequest(response);
             }
         }
-
 
         [HttpGet]
         [ResponseType(typeof(IEnumerable<ResponseDto>)), Route("api/user/validarloginAsync/{email}/{password}")]
@@ -156,5 +163,42 @@ namespace PresentationWeb.Controllers
             return View();
         }
 
+        [Microsoft.AspNetCore.Mvc.ApiExplorerSettings(IgnoreApi = true)]
+        [Route("working")]
+        public ActionResult Working()
+        {
+
+            var connection = new SqlConnection(_config.connectionStrings.Database);
+
+            if (String.IsNullOrEmpty(connection.ConnectionString))
+            {
+                ResponseDto response = new ResponseDto
+                {
+                    message = "Error ConnectionString esta vacia.",
+                };
+                return BadRequest(response);
+            }
+            else
+            {
+                try
+                {
+                    connection.Open();
+                    ResponseDto response = new ResponseDto
+                    {
+                        message = "Base de Datos Ok."
+                    };
+                    connection.Close();
+                    return BadRequest(response);
+                }
+                catch (SqlException)
+                {
+                    ResponseDto response = new ResponseDto
+                    {
+                        message = "Error al conectar Base de Datos"
+                    };
+                    return BadRequest(response);
+                }
+            }
+        }
     }
 }
