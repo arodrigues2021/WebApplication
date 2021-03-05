@@ -1,9 +1,13 @@
 ﻿using Aplication.Users.DTO;
+using Dapper;
+using Domain;
 using Domain.DTO;
 using Domain.Users.Entities;
 using Infrastructure.Users.Interface;
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 
 namespace Aplication.Users.Services
@@ -13,24 +17,105 @@ namespace Aplication.Users.Services
 
         private readonly IUsersRepository usersRepository;
 
-        public UsersService(IUsersRepository usersRepository)
+        private readonly IDbConnection _db;
+
+        private readonly Config _config;
+
+        public UsersService(Config config, IUsersRepository usersRepository)
         {
+            _config = config;
+
+            _db = new SqlConnection(_config.connectionStrings.Database);
+
             this.usersRepository = usersRepository;
         }
 
-        public UsuarioDTO AddUsuario(UsuarioDTO usuario)
+        public int AddUsuario(UsuarioDTO usuario)
         {
-            throw new NotImplementedException();
+            LoginDTO user = usersRepository.GetUsersByEmail(usuario.Email);
+            if (user!=null)
+            {
+                return 0;
+            }
+
+            var parameter = new
+            {
+                Nombre = usuario.Nombre,
+                Apellido = usuario.Apellido,
+                Email = usuario.Email,
+                Password = usuario.Password,
+                Movil = usuario.Movil,
+                Balance = usuario.Balance
+            };
+
+            string SqlString = $@"INSERT INTO [Usuario]
+                                     ([Nombre],
+                                      [Apellido],
+                                      [Email],
+                                      [Password],
+                                      [Movil],
+                                      [Balance])
+                                VALUES
+                                   (@Nombre, 
+                                    @Apellido, 
+                                    @Email, 
+                                    @Password, 
+                                    @Movil, 
+                                    @Balance)";
+
+            int result = _db.Execute(SqlString, parameter);
+
+            return result;
         }
 
-        public bool BorrarUsuario(BorradoDTO usuario)
+        public int BorrarUsuario(BorradoDTO usuario)
         {
-            throw new NotImplementedException();
+
+            LoginDTO user = usersRepository.GetUsersByEmail(usuario.Email);
+
+            var result = 0;
+
+            if (user != null)
+            {
+                var id = user.id;
+
+                string SqlString = $@" DELETE FROM [Usuario] WHERE [id] =  @id ";
+
+                result = _db.Execute(SqlString, new { id = id });
+            }
+
+            return result;
         }
 
-        public bool UpdateUsuario(UsuarioDTO usuarioDTO)
+        public int UpdateUsuario(UsuarioDTO usuario)
         {
-            throw new NotImplementedException();
+            LoginDTO user = usersRepository.GetUsersByEmail(usuario.Email);
+            if (user == null)
+            {
+                return 0;
+            }
+
+            var parameter = new
+            {
+                Nombre = usuario.Nombre,
+                Apellido = usuario.Apellido,
+                Password = usuario.Password,
+                Movil = usuario.Movil,
+                Balance = usuario.Balance,
+                id = user.id
+            };
+
+            string SqlString = $@"UPDATE Usuario SET
+                                       [Nombre]   = @Nombre
+                                      ,[Apellido] = @Apellido
+                                      ,[Password] = @Password
+                                      ,[Movil]    = @Movil
+                                      ,[Balance]  = @Balance  WHERE id = @id";
+
+            int result = _db.Execute(SqlString, parameter);
+
+            return result;
+
         }
 
         public List<Usuario> GetListUsers()
@@ -41,14 +126,14 @@ namespace Aplication.Users.Services
 
                 List<Usuario> pRet = (from a in usersRepository.GetListUsers()
 
-                                         select new Usuario()
-                                         {
-                                             Nombre   = a.Nombre,
-                                             Apellido = a.Apellido,
-                                             Email    = a.Email,
-                                             Movil    = a.Movil
+                                      select new Usuario()
+                                      {
+                                          Nombre = a.Nombre,
+                                          Apellido = a.Apellido,
+                                          Email = a.Email,
+                                          Movil = a.Movil
 
-                                         }).ToList();
+                                      }).ToList();
 
                 return pRet;
             }
@@ -58,12 +143,12 @@ namespace Aplication.Users.Services
             }
         }
 
-        public LoginDTO GetUsersByEmail(string email,string password)
+        public LoginDTO GetUsersByEmail(string email, string password)
         {
             try
             {
 
-                LoginDTO pRet = usersRepository.GetUsersByEmail(email,password);
+                LoginDTO pRet = usersRepository.GetUsersByEmail(email);
 
                 return pRet;
             }

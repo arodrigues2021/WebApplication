@@ -36,7 +36,7 @@ namespace Infrastructure.Users
             return _db.Query<Usuario>(SqlString).ToList();
         }
 
-        public LoginDTO GetUsersByEmail(string email, string password)
+        public LoginDTO GetUsersByEmail(string email)
         {
             string Email = email;
 

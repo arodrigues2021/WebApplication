@@ -11,11 +11,11 @@ namespace Aplication.Users
 
         LoginDTO GetUsersByEmail(string email, string password);
 
-        UsuarioDTO AddUsuario(UsuarioDTO usuarioDTO);
+        int AddUsuario(UsuarioDTO usuarioDTO);
 
-        bool BorrarUsuario(BorradoDTO usuario);
+        int BorrarUsuario(BorradoDTO usuario);
 
-        bool UpdateUsuario(UsuarioDTO usuarioDTO);
+        int UpdateUsuario(UsuarioDTO usuarioDTO);
 
     }
 

@@ -11,7 +11,7 @@ namespace Aplication.Users.DTO
         public string Apellido { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
-        public string movil { get; set; }
+        public string Movil { get; set; }
         public decimal Balance { get; set; }
 
     }

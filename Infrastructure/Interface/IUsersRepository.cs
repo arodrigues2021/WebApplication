@@ -7,6 +7,6 @@ namespace Infrastructure.Users.Interface
     public interface IUsersRepository
     {
         List<Usuario> GetListUsers();
-        LoginDTO GetUsersByEmail(string email, string password);
+        LoginDTO GetUsersByEmail(string email);
     }
 }

@@ -6,8 +6,6 @@
 
         public string message { get; set; }
 
-        public int totalCount { get; set; }
-
         public bool result { get; set; }
 
 
