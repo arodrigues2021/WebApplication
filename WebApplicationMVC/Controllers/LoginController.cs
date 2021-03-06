@@ -15,6 +15,7 @@ using System.Configuration;
 using Domain;
 using Microsoft.Extensions.Configuration;
 using static WebApplicationMVC.Startup;
+using PresentationWeb.Models;
 
 namespace PresentationWeb.Controllers
 {
@@ -26,7 +27,26 @@ namespace PresentationWeb.Controllers
         public IConfiguration Configuration { get; set; }
 
         public Config config;
-        public LoginController(ILogin ServicesLogin, IUsersService UsersService, Config config) : base(ServicesLogin, UsersService, config) { }
+        public LoginController(ILogin ServicesLogin, IUsersService UsersService, Config config , IUserInfoService UserInfoService) : base(ServicesLogin, UsersService, config, UserInfoService) { }
+
+
+        [HttpPost("authenticate")]
+        public IActionResult Authenticate(AuthenticationModel model)
+        {
+            var user = _UserInfoService.Autenticate(model.Email,model.Password);
+            if (user == null)
+            {
+                log.Error("LoginController-validarloginAsync");
+                ResponseDto response = new ResponseDto
+                {
+                    data = "",
+                    message = "Usuario o Password incorecto",
+                    result = false
+                };
+                return BadRequest(response);
+            }
+            return Ok(user);
+        }
 
         [HttpGet]
         [ResponseType(typeof(IEnumerable<ResponseDto>)), Route("api/user/GetListUsers")]

@@ -69,6 +69,7 @@ namespace Infrastructure.Users
             string Email = email;
 
             string SqlString = $@"SELECT   [Id]
+                                          ,[Nombre]
                                           ,[Email]
                                           ,[Password]
                                       FROM [dbo].[Usuario] Where Email = @Email";

@@ -25,18 +25,9 @@ namespace Aplication.AplicationServices.Services
             LoginDTO pRet = _UsersService.GetUsersByEmail(email, password);
             var message = string.Empty;
             bool result = true;
-            if (pRet != null)
+            if (pRet == null)
             {
-                //TimeSpan diascaduca = (pRet.FechaCreacion - System.DateTime.Now.Date);
-                //if (DateTime.Now > pRet.FechaCreacion.AddDays(Convert.ToInt32(_config.appSettings.numdiascambio)))
-                //{
-                //    message = Messages.Caducada;
-                //    result = false;
-                //}
-            }
-            else
-            {
-                message = pRet == null ? Messages.Email : string.Empty;
+                message = Messages.Email;
                 result = false;
             }
             ResponseDto response = new ResponseDto

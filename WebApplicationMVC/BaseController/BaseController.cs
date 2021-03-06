@@ -10,6 +10,7 @@ namespace PresentationWeb.Base
         public readonly IUsersService _UsersService;
         public readonly ILogin _ServicesLogin;
         public Config _config;
+        public readonly IUserInfoService _UserInfoService;
 
 
         public BaseController(IUsersService UsersService)
@@ -22,11 +23,12 @@ namespace PresentationWeb.Base
             _ServicesLogin = ServicesLogin;
         }
 
-        public BaseController(ILogin ServicesLogin, IUsersService UsersService, Config config)
+        public BaseController(ILogin ServicesLogin, IUsersService UsersService, Config config, IUserInfoService UserInfoService)
         {
             _ServicesLogin = ServicesLogin;
             _UsersService = UsersService;
             _config = config;
+            _UserInfoService = UserInfoService;
         }
     }
 

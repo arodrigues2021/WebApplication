@@ -22,7 +22,8 @@ namespace Domain
     public class AppSettings
     {
         public string numdiascambio { get; set; }
-       
+        public string Secret { get; set; }
+        public double dias { get; set; }
     }
 
     public class RedisCache

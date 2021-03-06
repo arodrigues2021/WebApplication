@@ -23,5 +23,6 @@ namespace Aplication.Users.DTO
         [Required(ErrorMessage = "Balance requerido")]
         public decimal Balance { get; set; }
 
+
     }
 }

@@ -18,7 +18,8 @@ namespace PresentationWeb
             builder.RegisterType<UsersRepository>().As<IUsersRepository>();
             builder.RegisterType<ServicesLogin>().As<ILogin>();
             builder.RegisterType<CacheService<object>>().As<ICacheService<object>>();
-            
+            builder.RegisterType<UserInfoService>().As<IUserInfoService>();
+
 
         }
     }
