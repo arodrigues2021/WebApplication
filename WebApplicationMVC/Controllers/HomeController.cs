@@ -26,11 +26,6 @@ namespace WebApplicationMVC.Controllers
         public IActionResult Index()
         {
 
-            //Todo:Armando
-            List<Usuario> pRet = _UsersService.GetListUsers();
-
-            log.Info("HomeController-GetListUsers");
-
             return View();
         }
 

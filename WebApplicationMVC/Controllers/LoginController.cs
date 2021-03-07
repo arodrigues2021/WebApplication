@@ -27,8 +27,17 @@ namespace PresentationWeb.Controllers
         public IConfiguration Configuration { get; set; }
 
         public Config config;
-        public LoginController(ILogin ServicesLogin, IUsersService UsersService, Config config , IUserInfoService UserInfoService) : base(ServicesLogin, UsersService, config, UserInfoService) { }
-
+        public LoginController(ILogin ServicesLogin, 
+            IUsersService UsersService, 
+            Config config , 
+            IUserInfoService UserInfoService,
+            apiContext context) : base(ServicesLogin, UsersService, config, UserInfoService, context) { }
+        
+        /// <summary>
+        /// Authenticate Token JWT
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         [HttpPost("authenticate")]
         public IActionResult Authenticate(AuthenticationModel model)
         {
@@ -40,7 +49,10 @@ namespace PresentationWeb.Controllers
             return Ok(user);
         }
 
-        //[Authorize(AuthenticationSchemes = "Bearer")]
+        /// <summary>
+        /// Lista de Usuarios
+        /// </summary>
+        /// <returns></returns>
         [Authorize]
         [HttpGet]
         [ResponseType(typeof(IEnumerable<ResponseDto>)), Route("api/user/GetListUsers")]
@@ -63,6 +75,12 @@ namespace PresentationWeb.Controllers
             }
         }
 
+        /// <summary>
+        /// Validar si existe email y password
+        /// </summary>
+        /// <param name="email"></param>
+        /// <param name="password"></param>
+        /// <returns></returns>
         [HttpGet]
         [ResponseType(typeof(IEnumerable<ResponseDto>)), Route("api/user/validarloginAsync/{email}/{password}")]
         //Ejemplo:https://localhost:44341/api/validarloginAsync/arodrigues2010@hotmail.com/123
@@ -162,6 +180,33 @@ namespace PresentationWeb.Controllers
             catch (Exception err)
             {
                 log.Error("LoginController-UpdateUsuario");
+                ResponseDto response = new ResponseDto
+                {
+                    data = "",
+                    message = err.Message,
+                    result = false
+                };
+                return BadRequest(response);
+            }
+        }
+
+
+        /// <summary>
+        /// Consultar balance de Usuario
+        /// </summary>
+        /// <param name="email"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [ResponseType(typeof(IEnumerable<ResponseDto>)), Route("api/user/ConsultarBalanceginAsync/{email}")]
+        public async Task<IActionResult> ConsultarBalanceginAsync(string email)
+        {
+            try
+            {
+                return Ok(await Task.FromResult(_ServicesLogin.ConsultarBalanceginAsync(email)).ConfigureAwait(false));
+            }
+            catch (Exception err)
+            {
+                log.Error("LoginController-ConsultarBalanceginAsync");
                 ResponseDto response = new ResponseDto
                 {
                     data = "",

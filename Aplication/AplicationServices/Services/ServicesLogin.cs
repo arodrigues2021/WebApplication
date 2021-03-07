@@ -3,8 +3,10 @@ using Aplication.Users;
 using Aplication.Users.DTO;
 using Domain.Users.DTO;
 using Domain.Resources;
-using System;
 using Domain;
+using PresentationWeb.Models;
+using System.Linq;
+using Domain.DTO;
 
 namespace Aplication.AplicationServices.Services
 {
@@ -12,12 +14,14 @@ namespace Aplication.AplicationServices.Services
     {
         private readonly Config _config;
 
-        public readonly IUsersService _UsersService;
+        private readonly apiContext _context;
 
-        public ServicesLogin(IUsersService UsersService, Config config)
+        public readonly IUsersService _UsersService;
+        public ServicesLogin(IUsersService UsersService, Config config, apiContext context)
         {
             _UsersService = UsersService;
             _config = config;
+            _context = context;
         }
 
         public ResponseDto validarlogin(string email, string password)
@@ -39,5 +43,19 @@ namespace Aplication.AplicationServices.Services
 
             return response;
         }
+
+        public Usuario ConsultarBalanceginAsync(string email)
+        {
+            var result = _context.Usuarios.Where(x => x.Email == email).FirstOrDefault();
+            BalanceDTO balance = new BalanceDTO();
+            balance.id = result.Id;
+            balance.Nombre = result.Nombre;
+            balance.Email = result.Email;
+            balance.Balance = result.Balance.ToString();
+            return result;
+
+        }
+
+       
     }
 }

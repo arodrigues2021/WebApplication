@@ -14,6 +14,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Aplication.AplicationServices.Interface;
 using Aplication.AplicationServices.Services;
+using PresentationWeb.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace WebApplicationMVC
 {
@@ -36,6 +38,8 @@ namespace WebApplicationMVC
 
         public void ConfigureServices(IServiceCollection services)
         {
+
+
             services.AddControllersWithViews();
 
             services.AddAuthenticationCore();
@@ -80,6 +84,11 @@ namespace WebApplicationMVC
             });
 
             services.AddScoped<IUserInfoService, UserInfoService>();
+
+            var ConnectionString = Configuration.GetSection("Config").Get<Config>();
+
+            services.AddDbContext<apiContext>(options => options.UseSqlServer(ConnectionString.connectionStrings.Database));
+
         }
 
         private void AddSwagger(IServiceCollection services)
@@ -109,7 +118,7 @@ namespace WebApplicationMVC
                 {
                       { jwtSecurityScheme, Array.Empty<string>() }
                 });
-                
+
                 setup.SwaggerDoc("v1", new OpenApiInfo
                 {
                     Title = "Prueba WEB api",

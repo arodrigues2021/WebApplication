@@ -2,6 +2,7 @@
 using Aplication.Users;
 using Domain;
 using Microsoft.AspNetCore.Mvc;
+using PresentationWeb.Models;
 using System.Net.Http;
 
 namespace PresentationWeb.Base
@@ -13,6 +14,7 @@ namespace PresentationWeb.Base
         public Config _config;
         public readonly IUserInfoService _UserInfoService;
         public readonly IHttpClientFactory _clientFactory;
+        private readonly apiContext _context;
 
         public BaseController(IUsersService UsersService)
         {
@@ -24,12 +26,18 @@ namespace PresentationWeb.Base
             _ServicesLogin = ServicesLogin;
         }
 
-        public BaseController(ILogin ServicesLogin, IUsersService UsersService, Config config, IUserInfoService UserInfoService)
+        public BaseController(ILogin ServicesLogin, 
+            IUsersService UsersService, 
+            Config config, 
+            IUserInfoService UserInfoService,
+            apiContext context
+            )
         {
             _ServicesLogin = ServicesLogin;
             _UsersService = UsersService;
             _config = config;
             _UserInfoService = UserInfoService;
+            _context = context;
         }
     }
 
