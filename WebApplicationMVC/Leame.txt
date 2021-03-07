@@ -7,3 +7,10 @@ Cambiar la ConnectionStrings en el fichero en appesttings.json
 Crear dabase de Demo y ejecutar el script SQLCrearTabla.sql
 
 https://localhost:44341/working Healthchecks
+
+Para generar el token utilizar el endpoint "authenticate"  desde el Swagger y luego
+registrarlo en AUTHORIZE.
+
+Se implemento EntityframeworkCore.
+
+muchas gracias por la oportunidad.
