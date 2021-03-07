@@ -8,11 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using PresentationWeb;
 using Microsoft.OpenApi.Models;
-using Swashbuckle.Swagger;
-using System.Web.Http.Description;
-using System.Linq;
 using System;
-using System.Collections.Generic;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
@@ -68,6 +64,7 @@ namespace WebApplicationMVC
                 x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             })
+            .AddCookie(cfg => cfg.SlidingExpiration = true)
             .AddJwtBearer(x =>
             {
                 x.RequireHttpsMetadata = false;
@@ -87,23 +84,48 @@ namespace WebApplicationMVC
 
         private void AddSwagger(IServiceCollection services)
         {
-            services.AddSwaggerGen(options =>
-            {              
-                options.SwaggerDoc("v1", new OpenApiInfo
+            services.AddSwaggerGen(setup =>
+            {
+                // Include 'SecurityScheme' to use JWT Authentication
+                var jwtSecurityScheme = new OpenApiSecurityScheme
+                {
+                    Scheme = "bearer",
+                    BearerFormat = "JWT",
+                    Name = "JWT Authentication",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.Http,
+                    Description = "JWT Bearer token",
+
+                    Reference = new OpenApiReference
+                    {
+                        Id = JwtBearerDefaults.AuthenticationScheme,
+                        Type = ReferenceType.SecurityScheme
+                    }
+                };
+
+                setup.AddSecurityDefinition(jwtSecurityScheme.Reference.Id, jwtSecurityScheme);
+
+                setup.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                      { jwtSecurityScheme, Array.Empty<string>() }
+                });
+                
+                setup.SwaggerDoc("v1", new OpenApiInfo
                 {
                     Title = "Prueba WEB api",
                     Version = "v1",
-                    Description = "Desarrollor:Armando Rodrigues"
-                    
+                    Description = "Desarrollador:Armando Rodrigues"
+
                 });
             });
+
         }
-       
+
         public void ConfigureContainer(ContainerBuilder builder)
         {
             //Autofact
             builder.RegisterModule<ServiceModules>();
-        }  
+        }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -115,7 +137,6 @@ namespace WebApplicationMVC
             else
             {
                 app.UseExceptionHandler("/Home/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
 
@@ -123,15 +144,14 @@ namespace WebApplicationMVC
 
             app.UseStaticFiles();
 
-            app.UseRouting();
-
-            app.UseAuthorization();
-
             app.UseCors("AllowWebApp");
 
             app.UseAuthentication();
 
+            app.UseRouting();
+
             app.UseAuthorization();
+
 
             app.UseEndpoints(endpoints =>
             {
@@ -146,7 +166,10 @@ namespace WebApplicationMVC
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Prueba API");
                 c.RoutePrefix = string.Empty;
+
             });
+
+
 
             app.UseHealthChecks("/working");
 

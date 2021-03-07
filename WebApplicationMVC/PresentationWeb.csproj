@@ -4,6 +4,7 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <AssemblyName>PresentationWeb</AssemblyName>
     <RootNamespace>PresentationWeb</RootNamespace>
+    <UserSecretsId>723074f5-ffc4-4960-8f60-e5a659ebcf36</UserSecretsId>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

@@ -2,6 +2,7 @@
 using Aplication.Users;
 using Domain;
 using Microsoft.AspNetCore.Mvc;
+using System.Net.Http;
 
 namespace PresentationWeb.Base
 {
@@ -11,7 +12,7 @@ namespace PresentationWeb.Base
         public readonly ILogin _ServicesLogin;
         public Config _config;
         public readonly IUserInfoService _UserInfoService;
-
+        public readonly IHttpClientFactory _clientFactory;
 
         public BaseController(IUsersService UsersService)
         {

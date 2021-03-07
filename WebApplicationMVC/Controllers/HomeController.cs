@@ -1,10 +1,17 @@
 ﻿using Aplication.Users;
 using Aplication.Users.DTO;
 using Domain.Users.Entities;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PresentationWeb.Base;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Net.Http;
+using System.Security.Claims;
+using System.Text;
 using WebApplicationMVC.Models;
 
 namespace WebApplicationMVC.Controllers
@@ -15,6 +22,7 @@ namespace WebApplicationMVC.Controllers
 
         public HomeController(IUsersService UsersService):base(UsersService){}
 
+       
         public IActionResult Index()
         {
 

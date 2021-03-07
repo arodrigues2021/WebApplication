@@ -34,7 +34,7 @@ namespace Aplication.AplicationServices.Services
             {
                 Subject = new ClaimsIdentity(new Claim[]
                 {
-                    new Claim(ClaimTypes.Name, pRet.id.ToString())
+                    new Claim(ClaimTypes.Email, pRet.Email)
                 }),
                 Expires = DateTime.UtcNow.AddDays(_config.appSettings.dias),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256)
