@@ -47,15 +47,18 @@ namespace Aplication.AplicationServices.Services
         public Usuario ConsultarBalanceginAsync(string email)
         {
             var result = _context.Usuarios.Where(x => x.Email == email).FirstOrDefault();
-            BalanceDTO balance = new BalanceDTO();
-            balance.id = result.Id;
-            balance.Nombre = result.Nombre;
-            balance.Email = result.Email;
-            balance.Balance = result.Balance.ToString();
+            
+            if (result != null)
+            {
+                BalanceDTO balance = new BalanceDTO();
+                balance.id      = result.Id;
+                balance.Nombre  = result.Nombre;
+                balance.Email   = result.Email;
+                balance.Balance = result.Balance.ToString();
+            }
+           
             return result;
 
         }
-
-       
     }
 }

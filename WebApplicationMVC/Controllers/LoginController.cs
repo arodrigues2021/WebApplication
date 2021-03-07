@@ -39,9 +39,9 @@ namespace PresentationWeb.Controllers
         /// <param name="model"></param>
         /// <returns></returns>
         [HttpPost("authenticate")]
-        public IActionResult Authenticate(AuthenticationModel model)
+        public async Task<IActionResult> Authenticate(AuthenticationModel model)
         {
-            var user = _UserInfoService.Autenticate(model.Email,model.Password);
+            var user = await Task.FromResult(_UserInfoService.Autenticate(model.Email,model.Password)).ConfigureAwait(false);
             if (user == null)
             {
                 return Unauthorized();
@@ -202,7 +202,18 @@ namespace PresentationWeb.Controllers
         {
             try
             {
-                return Ok(await Task.FromResult(_ServicesLogin.ConsultarBalanceginAsync(email)).ConfigureAwait(false));
+                var result = await Task.FromResult(_ServicesLogin.ConsultarBalanceginAsync(email)).ConfigureAwait(false);
+                if (result == null)
+                {
+                    ResponseDto response = new ResponseDto
+                    {
+                        data = "",
+                        message = "Usuario NO existe",
+                        result = false
+                    };
+                    return BadRequest(response);
+                }
+                return Ok(result);
             }
             catch (Exception err)
             {
